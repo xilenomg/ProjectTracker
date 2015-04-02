@@ -1,0 +1,25 @@
+{
+  "dev": {
+    "driver": "mysql",
+    "host": "localhost",
+    "user": "root",
+    "database": "project-tracker",
+    "password": "root"
+  },
+ 
+  "test": {
+    "driver": "mysql",
+    "host": "localhost",
+    "user": "root",
+    "database": "project-tracker",
+    "password": "root"
+  },
+ 
+  "prod": {
+    "driver": "mysql",
+    "host": "localhost",
+    "user": "root",
+    "database": "project-tracker",
+    "password": "root"
+  }
+}
