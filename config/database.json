@@ -1,7 +1,8 @@
 {
-  "dev": {
+  "development": {
     "driver": "mysql",
     "host": "localhost",
+    "port": "3306",
     "user": "root",
     "database": "project-tracker",
     "password": "root"
@@ -10,14 +11,16 @@
   "test": {
     "driver": "mysql",
     "host": "localhost",
+    "port": "3306",
     "user": "root",
     "database": "project-tracker",
     "password": "root"
   },
  
-  "prod": {
+  "production": {
     "driver": "mysql",
     "host": "localhost",
+    "port": "3306",
     "user": "root",
     "database": "project-tracker",
     "password": "root"
