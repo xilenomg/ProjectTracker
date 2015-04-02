@@ -42,6 +42,7 @@
     "express-myconnection": "*",
     "express-session": "1.10.2",
     "express-validator": "^2.6.0",
+    "grunt-contrib-cssmin": "^0.12.2",
     "hat": "*",
     "mysql": "2.5.4",
     "sequelize": "^2.0.5",
