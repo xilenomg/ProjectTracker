@@ -1,26 +1,6 @@
 module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-		watch: {
-			sass: {
-				files: ['public/assets/stylesheet/sass/*.{scss,sass}'],
-				tasks: ['sass:dist', 'concat:distcss', 'cssmin']
-			},
-			concat:{
-				files: [
-					'public/assets/javascript/app/app.js',
-					'public/assets/javascript/app/controllers/*.js',
-					'public/assets/javascript/app/filters/*.js',
-					'public/assets/javascript/app/models/*.js',
-					'public/assets/javascript/app/services/*.js'
-				],
-				tasks: ['concat:dist','uglify']
-			},
-			uglify:{
-				files: ['public/assets/javascript/project-tracker.min.js', 'public/assets/javascript/admin/project-tracker.js'],
-				tasks: ['uglify:js']
-			}
-		},
 		concat: {
 			dist: {
 				src: [ 
@@ -69,6 +49,26 @@ module.exports = function(grunt) {
 				files: {
 					'public/assets/stylesheet/compiled/project-tracker.css': 'public/assets/stylesheet/sass/*.{scss,sass}'
 				}
+			}
+		},
+		watch: {
+			sass: {
+				files: ['public/assets/stylesheet/sass/*.{scss,sass}'],
+				tasks: ['sass:dist', 'concat:distcss', 'cssmin']
+			},
+			concat:{
+				files: [
+					'public/assets/javascript/app/app.js',
+					'public/assets/javascript/app/controllers/**/*.js',
+					'public/assets/javascript/app/filters/**/*.js',
+					'public/assets/javascript/app/models/**/*.js',
+					'public/assets/javascript/app/services/**/*.js'
+				],
+				tasks: ['concat:dist','uglify']
+			},
+			uglify:{
+				files: ['public/assets/javascript/project-tracker.min.js', 'public/assets/javascript/admin/project-tracker.js'],
+				tasks: ['uglify:js']
 			}
 		}
 	});
