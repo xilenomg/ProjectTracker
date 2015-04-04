@@ -12,5 +12,10 @@ projectTrackerApp.config([ '$routeProvider', function($routeProvider) {
 		title: 'Welcome to ProjectTracker',
 		templateUrl : 'views/pages/login.html',
 		controller : 'LoginController'
+	})
+	.when('/projects',{
+		title: 'Projects',
+		templateUrl: 'views/pages/projects.html',
+		controller: 'ProjectsController'
 	});
 }]);

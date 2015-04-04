@@ -34,7 +34,17 @@ module.exports = function(app){
 			type: Sequelize.DATE,
 			field: 'updated_at'
 		}
-	});
+	},
+	{
+		instanceMethods:{
+			name: function(){
+				return this.firstName + " " + this.lastName
+			},
+			generateCheckup: function(){
+				return utils.sha1(this.name() + 'd4afd6370964116223499' + this.id + this.email + this.password + 'b0d95ebe7f8fe95683e')
+			}
+		}
+	})
 
 	return User;
 }

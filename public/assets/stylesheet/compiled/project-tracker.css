@@ -14,14 +14,28 @@ body {
       text-align: center; }
     body #loginPage .signup-side, body #loginPage .signin-side {
       padding: 0px 60px;
-      min-height: 440px; }
+      min-height: 460px; }
       body #loginPage .signup-side .row, body #loginPage .signin-side .row {
         margin: 10px 0px; }
     body #loginPage .signup-side {
       background: #EFEFEF;
-      border-right: 1px dashed #999999; }
+      border: 1px solid #999999; }
     body #loginPage .signin-side {
-      background: #EFEFEF; }
+      background: #DEDEDE;
+      border: 1px solid #999999;
+      border-left: 0px; }
+    body #loginPage .signin-message, body #loginPage .signup-message {
+      padding: 5px; }
+  body .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #f5f5f5;
+    padding: 5px; }
+    body .footer .container {
+      text-align: center; }
+    body .footer .container .text-muted {
+      font-size: 11px; }
 
 /*{"c":"2015-04-02T04:15:51Z","s":"prod-origin-213451cc","v":"673509"}*/
 /*

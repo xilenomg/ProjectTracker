@@ -13,10 +13,15 @@ module.exports = function(app){
 
 		User.find({ where: {email: email, password: password} }).then(function(user){
 			if ( !!user ){
+				console.log(user);
+				
+				res.cookie('uid', user.id, { maxAge: 900000, httpOnly: true });
+				res.cookie('name', user.name(), { maxAge: 900000, httpOnly: true });
+				res.cookie('checkup', user.generateCheckup, { maxAge: 900000, httpOnly: true });
 				res.json({status: 'success', error_message: null, user: user });
 			}
 			else{
-				res.json({status: 'error', error_message: 'User not found', user: null });
+				res.status(404).json({status: 'error', error_message: 'User not found', user: null });
 			}
 		})
 
@@ -32,13 +37,24 @@ module.exports = function(app){
 		var lastName = req.body.lastName;
 		var email = req.body.email;
 		var password = utils.sha1(req.body.password);
+		var confirm_password = utils.sha1(req.body.confirm_password);
+		if ( password !== confirm_password ){
+			res.status(403).json({status: 'error', error_message: 'Password doesn\'t match', user: null });	
+		}
 
-		User.findOrCreate({firstName: firstName, lastName: lastName, email: email, password: password}).then(function(user){
+		User.find({where:{email: email}}).then(function(user){
 			if ( !!user ){
-				res.json({status: 'success', error_message: null, user: user });
+				res.status(403).json({status: 'error', error_message: 'User already exists', user: null });
 			}
 			else{
-				res.json({status: 'error', error_message: 'User not found', user: null });
+				User.create({firstName: firstName, lastName: lastName, email: email, password: password}).then(function(user){
+					if ( !!user ){
+						res.json({status: 'success', error_message: null, user: user });
+					}
+					else{
+						res.status(403).json({status: 'error', error_message: 'Error when creating user', user: null });	
+					}
+				});
 			}
 		});
 

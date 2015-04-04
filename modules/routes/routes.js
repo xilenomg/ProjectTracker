@@ -7,11 +7,11 @@ module.exports = function(app) {
 	});
 
 	//API
-	app.post('/api/authenticate', function(req, res, next){
+	app.post('/api/user/authenticate', function(req, res, next){
 		AuthenticationController.authenticate(req,res,next);
 	});
 
-	app.post('/api/register', function(req, res, next){
+	app.post('/api/user/register', function(req, res, next){
 		AuthenticationController.register(req,res,next);
 	});
 };

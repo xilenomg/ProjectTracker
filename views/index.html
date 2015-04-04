@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <html ng-app="projectTrackerApp">
-	<head>
-		<title></title>
-		<link rel="stylesheet" type="text/css" href="assets/stylesheet/project-tracker.min.css" />
-	</head>
-	<body>
-		<nav class="navbar navbar-fixed-top header" ng-controller="HeaderController">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="#/">
-						<img class="project-tracker-logo" alt="Project Tracker Logo" title="Project Tracker Logo" src="/assets/images/project-tracker-logo.png" />
-					</a>
-				</div>
-			</div>
-		</nav>
-
-		<nav class="navbar-inverse">
-			<div class="container-fluid">
-				&rsaquo; Home
-			</div>
-		</nav>
-
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="assets/stylesheet/project-tracker.min.css" />
+</head>
+<body>
+	<nav class="navbar navbar-fixed-top header" ng-controller="HeaderController">
 		<div class="container-fluid">
-			<div ng-view></div>
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#/">
+					<img class="project-tracker-logo" alt="Project Tracker Logo" title="Project Tracker Logo" src="/assets/images/project-tracker-logo.png" />
+				</a>
+			</div>
 		</div>
-		<script src="/assets/javascript/project-tracker.js"></script>
-	</body>
+	</nav>
+
+	<nav class="navbar-inverse">
+		<div class="container-fluid">
+			&rsaquo; Home
+		</div>
+	</nav>
+
+	<div class="container-fluid">
+		<div ng-view></div>
+	</div>
+
+	<footer class="footer">
+		<div class="container">
+			<p class="text-muted">ProjectTracker is an open-source tool</p>
+		</div>
+	</footer>
+	<script src="/assets/javascript/project-tracker.js"></script>
+</body>
 </html>

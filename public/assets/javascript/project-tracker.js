@@ -28755,14 +28755,135 @@ projectTrackerApp.config([ '$routeProvider', function($routeProvider) {
 		title: 'Welcome to ProjectTracker',
 		templateUrl : 'views/pages/login.html',
 		controller : 'LoginController'
+	})
+	.when('/projects',{
+		title: 'Projects',
+		templateUrl: 'views/pages/projects.html',
+		controller: 'ProjectsController'
 	});
 }]);
 projectTrackerApp.controller('HeaderController', [function(){
 	console.log("HeaderController");
 }]);
-projectTrackerApp.controller('LoginController', [function(){
+projectTrackerApp
+.controller('LoginController', ['$scope', '$rootScope', '$location', 'UserService', function($scope, $rootScope, $location, UserService){
+	//ng-model to signup
+	$scope.user_signup = {firstName: null, lastName:null, email: null, password: null, confirm_password: null};
 
+	//ng-model to signin
+	$scope.user_signin = {email: null, password: null};
+
+	//form submit to authenticate
+	$scope.authenticate = function(){
+		UserService.authenticate($scope.user_signin)
+		.success(function(data, status, headers, config){
+			$rootScope.$emit('signin-message', {type: 'success', message: 'User is now signed in'});
+			$location.path('/projects');
+		})
+		.error(function(data, status, headers, config){
+			$rootScope.$emit('signin-message', { type: 'error', message: data.error_message });
+		});
+	};
+
+	//form submit to register
+	$scope.register = function(){
+		UserService.register($scope.user_signup)
+		.success(function(data, status, headers, config){
+			$rootScope.$emit('signup-message', {type: 'success', message: 'User successfully registered'});
+		})
+		.error(function(data, status, headers, config){
+			$rootScope.$emit('signup-message', { type: 'error', message: data.error_message });
+		});
+	};
+
+}])
+.directive('signinMessage', ['$rootScope',function($rootScope){
+	var linker = function(scope, element, attrs){
+		var setContent = function(type, message){
+			// remove css classes
+			element.removeClass('bg-success').removeClass('bg-danger');
+
+			//add proper css class
+			if ( type === 'success' ){
+				element.addClass('bg-success');
+			}
+			else if( type === 'error' ) {
+				element.addClass('bg-danger');
+			}
+
+			//change element message
+			element.html(message);
+		};
+
+		//Listen to event signin-message
+		$rootScope.$on('signin-message', function (event, args){
+			setContent(args.type, args.message);
+		});
+	};
+
+	return {
+		restrict: 'C',
+		link: linker
+	}
+}])
+.directive('signupMessage', ['$rootScope', function($rootScope){
+	var linker = function(scope, element, attrs){
+		var setContent = function(type, message){
+			// remove css classes
+			element.removeClass('bg-success').removeClass('bg-danger');
+
+			//add proper css class
+			if ( type === 'success' ){
+				element.addClass('bg-success');
+			}
+			else if( type === 'error' ) {
+				element.addClass('bg-danger');
+			}
+
+			//change element message
+			element.html(message);
+		};
+
+		//Listen to event signup-message
+		$rootScope.$on('signup-message', function (event, args){
+			setContent(args.type, args.message);
+		});
+	};
+
+	return {
+		restrict: 'C',
+		link: linker
+	}
 }]);
-projectTrackerApp.service('UserService', [function(){
-	console.log("UserService");
+projectTrackerApp.controller('AuthenticationService', ['$cookies',function($cookies){
+	var isUserLoggedIn = function(){
+		return !!$cookies.uid && !!$cookies.name && !!$cookies.checkup;
+	};
+
+	var userLogout = function(){
+		$cookies.remove('uid');
+		$cookies.remove('name');
+		$cookies.remove('checkup');
+
+		return !isUserLoggedIn();
+	};
+
+	return {
+		isUserLoggedIn: isUserLoggedIn,
+		userLogout: userLogout
+	}
+}]);
+projectTrackerApp.service('UserService', ['$http', function($http){
+	var register = function(user){
+		return $http.post('/api/user/register', user);
+	};
+
+	var authenticate = function(user){
+		return $http.post('/api/user/authenticate', user);
+	}
+
+	return {
+		register: register,
+		authenticate: authenticate
+	};
 }]);
