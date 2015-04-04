@@ -28758,8 +28758,11 @@ projectTrackerApp.config([ '$routeProvider', function($routeProvider) {
 	});
 }]);
 projectTrackerApp.controller('HeaderController', [function(){
-	console.log("aloalo");
+	console.log("HeaderController");
 }]);
 projectTrackerApp.controller('LoginController', [function(){
-	console.log("alo");
+	console.log("LoginController");
+}]);
+projectTrackerApp.service('UserService', [function(){
+	console.log("UserService");
 }]);

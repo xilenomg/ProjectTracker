@@ -17,10 +17,16 @@ var User = sequelize.define('User', {
 	email:{
 		type: Sequelize.STRING,
 		field: 'email'
+	},
+	createdAt: {
+		type: Sequelize.DATE,
+		field: 'created_at'
+	},
+	updatedAt: {
+		type: Sequelize.DATE,
+		field: 'updated_at'
 	}
-});
-
-User.sync();
+});	
 
 module.exports = {
 	User: User

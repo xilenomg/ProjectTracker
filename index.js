@@ -31,10 +31,10 @@ app.use(expressValidator());
 
 //Instances
 config = require('./config/database.json')[app.get('environment')],
-sequelize = new Sequelize(config.database, config.user, config.password, {
+sequelize = new Sequelize(config.database, config.username, config.password, {
 	host: config.host,
 	port: config.port,
-	logging: config.logging
+	logging: console.log
 });
 
 //Load models

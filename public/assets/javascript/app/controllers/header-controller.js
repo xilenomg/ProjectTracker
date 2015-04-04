@@ -1,3 +1,3 @@
 projectTrackerApp.controller('HeaderController', [function(){
-	console.log("aloalo");
+	console.log("HeaderController");
 }]);

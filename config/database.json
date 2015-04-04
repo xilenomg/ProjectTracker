@@ -1,27 +1,30 @@
 {
   "development": {
     "driver": "mysql",
+    "dialect": "mysql",
     "host": "localhost",
     "port": "3306",
-    "user": "root",
+    "username": "root",
     "database": "project-tracker",
     "password": "root"
   },
  
   "test": {
     "driver": "mysql",
+    "dialect": "mysql",
     "host": "localhost",
     "port": "3306",
-    "user": "root",
+    "username": "root",
     "database": "project-tracker",
     "password": "root"
   },
  
   "production": {
     "driver": "mysql",
+    "dialect": "mysql",
     "host": "localhost",
     "port": "3306",
-    "user": "root",
+    "username": "root",
     "database": "project-tracker",
     "password": "root"
   }

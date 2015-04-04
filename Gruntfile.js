@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 				dest: 'public/assets/javascript/project-tracker.js'
 			},
 			distcss:{
-				src: [ 'node_modules/bootstrap/dist/css/bootstrap.css','public/assets/stylesheet/compiled/base.css' ],
+				src: [ 'node_modules/bootstrap/dist/css/bootstrap.css', 'public/assets/stylesheet/compiled/project-tracker.css' ],
 				dest: 'public/assets/stylesheet/project-tracker.min.css'
 			}
 		},
@@ -70,13 +70,20 @@ module.exports = function(grunt) {
 				files: ['public/assets/javascript/project-tracker.min.js', 'public/assets/javascript/admin/project-tracker.js'],
 				tasks: ['uglify:js']
 			}
+		},
+		copy: {
+			files: {
+				src: 'node_modules/fonts/**/*',
+				dest: 'public/assets/fonts'
+			}
 		}
 	});
-grunt.registerTask('default', ['sass:dist', 'watch', 'concat:dist',  'uglify:js', 'concat:distcss', 'cssmin']);
+grunt.registerTask('default', ['sass:dist', 'copy']);
 grunt.loadNpmTasks('grunt-sass');
 grunt.loadNpmTasks('grunt-contrib-concat');
 grunt.loadNpmTasks('grunt-contrib-uglify');
 grunt.loadNpmTasks('grunt-contrib-watch');
 grunt.loadNpmTasks('grunt-contrib-cssmin');
 grunt.loadNpmTasks('grunt-contrib-jshint');
+grunt.loadNpmTasks('grunt-contrib-copy');
 };
