@@ -12,6 +12,7 @@ body{
 	}
 
 	#loginPage{
+		margin-top: 20px;
 		h1{
 			text-align: center;
 		}
@@ -25,7 +26,8 @@ body{
 		}
 
 		.signup-side{
-			background: #CECECE;
+			background: #EFEFEF;
+			border-right: 1px dashed #999999
 		}
 
 		.signin-side{

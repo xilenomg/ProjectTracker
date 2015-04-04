@@ -1,20 +1,17 @@
 //Requires
-express  = require('express'),
-http = require('http'),
-bodyParser = require('body-parser'),
-compression = require('compression'),
-expressValidator = require('express-validator'),
-sass = require("node-sass"),
-path = require('path'),
-hat = require("hat"),
-async = require("async"),
-favicon = require('serve-favicon'),
-_ = require('underscore'),
-cookieParser = require('cookie-parser'),
-connection  = require('express-myconnection'),
-mysql = require('mysql'),
-Sequelize = require('sequelize'),
-app = express();
+var	express  = require('express'),
+	http = require('http'),
+	bodyParser = require('body-parser'),
+	compression = require('compression'),
+	expressValidator = require('express-validator'),
+	sass = require("node-sass"),
+	path = require('path'),
+	hat = require("hat"),
+	async = require("async"),
+	favicon = require('serve-favicon'),
+	_ = require('underscore'),
+	cookieParser = require('cookie-parser'),
+	app = express();
 
 //App set up
 app.set("view options", {layout: false});
@@ -30,16 +27,10 @@ app.use(bodyParser.json());
 app.use(expressValidator());
 
 //Instances
-config = require('./config/database.json')[app.get('environment')],
-sequelize = new Sequelize(config.database, config.username, config.password, {
-	host: config.host,
-	port: config.port,
-	logging: console.log
-});
+var Common = require('./modules/common.js')(app);
 
-//Load models
-var models = require('./modules/models.js');
-var route = require('./modules/controllers/routes.js');
+//Load routes
+require('./modules/routes/routes.js')(app);
 
 //start Server
 var server = app.listen(app.get('port'),function(){

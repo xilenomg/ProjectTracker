@@ -28761,7 +28761,7 @@ projectTrackerApp.controller('HeaderController', [function(){
 	console.log("HeaderController");
 }]);
 projectTrackerApp.controller('LoginController', [function(){
-	console.log("LoginController");
+
 }]);
 projectTrackerApp.service('UserService', [function(){
 	console.log("UserService");

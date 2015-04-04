@@ -78,7 +78,7 @@ module.exports = function(grunt) {
 			}
 		}
 	});
-grunt.registerTask('default', ['sass:dist', 'copy']);
+grunt.registerTask('default', ['watch', 'sass:dist', 'copy']);
 grunt.loadNpmTasks('grunt-sass');
 grunt.loadNpmTasks('grunt-contrib-concat');
 grunt.loadNpmTasks('grunt-contrib-uglify');
