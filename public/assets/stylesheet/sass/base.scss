@@ -4,18 +4,46 @@ html{
 }
 body{
 	background: #FFFFFF;
-	padding-top:50px;
+	padding: 0px;
+	padding-top:60px;
+	padding-bottom:50px;
+
+	h1,h2,h3,h4,h5{
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+
+	a{
+		color: inherit;
+	}
 
 	.header{
 		background: #FFFFFF;
 		border-bottom: 1px solid #EFEFEF;
 	}
 
+	.custom-page-header{
+		border-bottom: 1px solid #EFEFEF;
+		padding: 5px;
+		margin: 5px 0px;
+		overflow: hidden;
+		color: #666666;
+		margin-bottom: 20px;
+
+		a{
+			&:hover{
+				color: #000000;
+			}
+		}
+	}
+
 	#loginPage{
 		margin-top: 20px;
+
 		h1{
 			text-align: center;
 		}
+
 		.signup-side, .signin-side{
 			padding: 0px 60px;
 			min-height: 460px;
@@ -36,16 +64,57 @@ body{
 			border-left: 0px;
 		}
 
-		.signin-message, .signup-message{
+		.status-message{
 			padding: 5px;
 		}
 	}
 
+	#projectsPage{
+		.projects{
+			.project{
+				margin-bottom: 10px;
+				border: 1px solid #EFEFEF;
+				padding:5px;
+				border-radius: 5px;
+				h3{
+					font-size: 15px;
+				}
+
+				.project-description{
+					color: #787878;
+					padding: 30px;
+					border-top:1px solid #EFEFEF;
+				}
+
+				&:hover{
+					background:#DFF0D8;
+					.project-description{
+						border-top:1px solid #FFFFFF;
+					}
+				}
+			}
+		}
+	}
+
+	#addProjectPage{
+		background: #EFEFEF;
+		padding: 10px;
+		border: 1px solid #CECECE;
+		border-radius: 10px;
+		margin-bottom: 10px;
+
+		.row{
+			padding: 10px 0px;
+		}
+	}
+
 	.footer {
-		position: absolute;
+		position: fixed;
 		bottom: 0;
 		width: 100%;
-		background-color: #f5f5f5;
+		background-color: #000000;
+		color: #FFFFFF;
+		font-size: 11px;
 		padding: 5px;
 
 		.container {

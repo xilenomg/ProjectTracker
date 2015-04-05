@@ -1,0 +1,28 @@
+<div id="addProjectPage">
+	<form ng-submit="register()">
+		<div class="container">
+			<div class="row">
+				<h3>Add project</h3>
+				<div class="row">
+					<label>Title</label>
+					<input type="text" class="form-control" ng-model="project.title" placeholder="Title" required />
+				</div>
+
+				<div class="row">
+					<label>Description</label>
+					<textarea type="text" class="form-control" ng-model="project.description" placeholder="Name" required></textarea>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-3">
+						<input type="submit" class="btn btn-success" value="Add project" />
+					</div>
+
+					<div class="col-sm-9">
+						<div class="add-project-message status-message"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

@@ -1,5 +1,5 @@
 module.exports = function(app){
-
+	var utils = require('utility');
 	var Common = require('../common.js')(app);
 
 	var User = Common.sequelize.define('User', {
@@ -44,7 +44,7 @@ module.exports = function(app){
 				return utils.sha1(this.name() + 'd4afd6370964116223499' + this.id + this.email + this.password + 'b0d95ebe7f8fe95683e')
 			}
 		}
-	})
+	});
 
 	return User;
 }

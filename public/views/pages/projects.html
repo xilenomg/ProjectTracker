@@ -1,0 +1,29 @@
+<div class="container-fluid" id="projectsPage">
+
+	<div class="row custom-page-header">
+		<h3 class="pull-left">Projects</h3>
+		<button class="pull-right btn btn-lg btn-default" ng-click="toggleAddProject()">add project</button>
+	</div>
+
+	<div class="add-project" ng-show="showAddProject"></div>
+
+	<div class="row">
+		<div class="projects container-fluid">
+			<div class="project" ng-repeat="project in projects">
+				<div class="row">
+					<div class="col-sm-7 col-md-7 col-lg-7 pull-left">
+						<h3>{{project.title}}</h3>
+					</div>
+					<div class="col-sm-5 col-md-5 col-lg-5">
+						<a href="#/projects/{{project.id}}/" class="btn btn-primary btn-md pull-right">See project</a>
+					</div>
+				</div>
+				<div class="container-fluid project-description">
+					<div class="row">
+						{{project.description}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

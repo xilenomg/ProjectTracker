@@ -1,6 +1,7 @@
 module.exports = function(app){
 	var User = require('../models/user.js')(app);
 	var utils = require('utility');
+	var Cookies = require('cookies');
 
 	/**
 	* Authenticate user
@@ -13,11 +14,11 @@ module.exports = function(app){
 
 		User.find({ where: {email: email, password: password} }).then(function(user){
 			if ( !!user ){
-				console.log(user);
-				
-				res.cookie('uid', user.id, { maxAge: 900000, httpOnly: true });
-				res.cookie('name', user.name(), { maxAge: 900000, httpOnly: true });
-				res.cookie('checkup', user.generateCheckup, { maxAge: 900000, httpOnly: true });
+				console.log(user.id);
+				res.cookie('uid', user.id, { maxAge: 119990000000, httpOnly: true });
+				res.cookie('name', user.name(), { maxAge: 119990000000, httpOnly: true });
+				res.cookie('checkup', user.generateCheckup(), { maxAge: 119990000000, httpOnly: true });
+
 				res.json({status: 'success', error_message: null, user: user });
 			}
 			else{
@@ -60,8 +61,29 @@ module.exports = function(app){
 
 	};
 
+	/**
+	* is User logged in function
+	*/
+	var isUserLoggedIn = function(req, res, next){
+		var cookies = new Cookies(req, res);
+		if ( cookies.get('uid') && cookies.get('name') && cookies.get('checkup') ){
+			User.find({where:{id: cookies.get('uid')}}).then(function(user){
+				if ( !!user ){
+					if ( user.generateCheckup() === cookies.get('checkup') ){
+						return next();
+					}
+				}
+				return res.status(404).end();
+			});
+		}
+		else{
+			return res.status(404).end();
+		}
+	};
+
 	return {
 		authenticate: authenticate,
-		register: register
+		register: register,
+		isUserLoggedIn: isUserLoggedIn
 	};
 };

@@ -10,14 +10,12 @@ var	express  = require('express'),
 	async = require("async"),
 	favicon = require('serve-favicon'),
 	_ = require('underscore'),
-	cookieParser = require('cookie-parser'),
 	app = express();
 
 //App set up
 app.set("view options", {layout: false});
 app.set('port', process.env.PORT || 3000);
 app.set('environment', process.env.NODE_ENV || 'development');
-app.use(cookieParser());
 app.engine('html', require('ejs').renderFile);
 app.use(compression({ threshold: 512 }));
 
