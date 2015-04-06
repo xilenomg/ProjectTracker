@@ -28772,13 +28772,18 @@ projectTrackerApp.config([ '$routeProvider', function($routeProvider) {
 		title: 'Projects',
 		templateUrl: 'views/pages/projects.html',
 		controller: 'ProjectsController'
+	})
+	.when('/projects/:id_project/releases',{
+		title: 'Project Releases',
+		templateUrl: 'views/pages/project_releases.html',
+		controller: 'ProjectReleasesController'
 	});
 }]);
 projectTrackerApp.controller('HeaderController', [function(){
 	console.log("HeaderController");
 }]);
 projectTrackerApp
-.controller('LoginController', ['$scope', '$rootScope', '$location', 'UserService', function($scope, $rootScope, $location, UserService){
+.controller('LoginController', ['$scope', '$rootScope', '$location', '$timeout', 'UserService', function($scope, $rootScope, $location, $timeout, UserService){
 	//ng-model to signup
 	$scope.user_signup = {firstName: null, lastName:null, email: null, password: null, confirm_password: null};
 
@@ -28790,7 +28795,9 @@ projectTrackerApp
 		UserService.authenticate($scope.user_signin)
 		.success(function(data, status, headers, config){
 			$rootScope.$emit('signin-message', {type: 'success', message: 'User is now signed in'});
-			$location.path('/projects');
+			$timeout(function(){
+				$location.path('/projects');
+			}, 500);
 		})
 		.error(function(data, status, headers, config){
 			$rootScope.$emit('signin-message', { type: 'error', message: data.error_message });
@@ -28868,8 +28875,9 @@ projectTrackerApp
 	}
 }]);
 projectTrackerApp
-.controller('ProjectsController', ['$scope', '$rootScope', 'ProjectService', function($scope, $rootScope, ProjectService){
-	
+.controller('ProjectsController', ['$scope', '$rootScope', '$cookies', 'ProjectService', 'AuthenticationService', function($scope, $rootScope, $cookies, ProjectService, AuthenticationService){
+	AuthenticationService.requireLogin();
+
 	//show projects function
 	var showProjects = function(){
 		ProjectService.listAll()
@@ -28904,7 +28912,6 @@ projectTrackerApp
 }])
 .directive('addProject', ['$rootScope', 'ProjectService', function($rootScope, ProjectService){
 	
-
 	var linker = function(scope, element, attrs){
 		scope.project = {title: null, description: null};
 
@@ -28954,7 +28961,7 @@ projectTrackerApp
 		link: linker
 	}
 }]);;
-projectTrackerApp.controller('AuthenticationService', ['$cookies',function($cookies){
+projectTrackerApp.service('AuthenticationService', ['$cookies', '$location', function($cookies, $location){
 	var isUserLoggedIn = function(){
 		return !!$cookies.uid && !!$cookies.name && !!$cookies.checkup;
 	};
@@ -28967,9 +28974,18 @@ projectTrackerApp.controller('AuthenticationService', ['$cookies',function($cook
 		return !isUserLoggedIn();
 	};
 
+	var requireLogin = function(){
+		if ( !isUserLoggedIn() ){
+			console.log("false");
+			$location.path("/");
+		}
+		console.log("true");
+	};
+
 	return {
 		isUserLoggedIn: isUserLoggedIn,
-		userLogout: userLogout
+		userLogout: userLogout,
+		requireLogin: requireLogin
 	}
 }]);
 projectTrackerApp.service('ProjectService', ['$http', function($http){

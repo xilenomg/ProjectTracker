@@ -1,12 +1,7 @@
 module.exports = function(app){
 	var utils = require('utility');
-	var Project = require('../models/project.js')(app);
-	var User = require('../models/user.js')(app);
-	var UserProject = require('../models/user_project.js')(app);
+	var Models = require('../models/models.js')(app);
 	var Cookies = require('cookies');
-
-	User.belongsToMany(Project, {through: UserProject, foreignKey: 'id_user'});
-	Project.belongsToMany(User, {through: UserProject, foreignKey: 'id_project'});
 
 	/**
 	* list All projects user
@@ -18,7 +13,7 @@ module.exports = function(app){
 		var id_user = cookies.get('uid');
 
 
-		var user = User.find(id_user).then(function(user){
+		var user = Models.User.find(id_user).then(function(user){
 			user.getProjects().then(function(projects){
 				res.json(projects);
 			})
@@ -39,9 +34,9 @@ module.exports = function(app){
 		var title = req.body.title;
 		var description = req.body.description;
 
-		Project.create({title: title, description: description}).then(function(project){
+		Models.Project.create({title: title, description: description}).then(function(project){
 			if ( project ){
-				UserProject.create({idUser: id_user, idProject: project.id, role: 'owner'}).then(function(user_project){
+				Models.UserProject.create({idUser: id_user, idProject: project.id, role: 'owner'}).then(function(user_project){
 					if ( user_project ) {
 						res.json({status: 'success', error_message: null, project: project});
 					}

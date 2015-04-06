@@ -1,6 +1,7 @@
 projectTrackerApp
-.controller('ProjectsController', ['$scope', '$rootScope', 'ProjectService', function($scope, $rootScope, ProjectService){
-	
+.controller('ProjectsController', ['$scope', '$rootScope', '$cookies', 'ProjectService', 'AuthenticationService', function($scope, $rootScope, $cookies, ProjectService, AuthenticationService){
+	AuthenticationService.requireLogin();
+
 	//show projects function
 	var showProjects = function(){
 		ProjectService.listAll()
@@ -35,7 +36,6 @@ projectTrackerApp
 }])
 .directive('addProject', ['$rootScope', 'ProjectService', function($rootScope, ProjectService){
 	
-
 	var linker = function(scope, element, attrs){
 		scope.project = {title: null, description: null};
 

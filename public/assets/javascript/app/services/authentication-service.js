@@ -1,4 +1,4 @@
-projectTrackerApp.controller('AuthenticationService', ['$cookies',function($cookies){
+projectTrackerApp.service('AuthenticationService', ['$cookies', '$location', function($cookies, $location){
 	var isUserLoggedIn = function(){
 		return !!$cookies.uid && !!$cookies.name && !!$cookies.checkup;
 	};
@@ -11,8 +11,17 @@ projectTrackerApp.controller('AuthenticationService', ['$cookies',function($cook
 		return !isUserLoggedIn();
 	};
 
+	var requireLogin = function(){
+		if ( !isUserLoggedIn() ){
+			console.log("false");
+			$location.path("/");
+		}
+		console.log("true");
+	};
+
 	return {
 		isUserLoggedIn: isUserLoggedIn,
-		userLogout: userLogout
+		userLogout: userLogout,
+		requireLogin: requireLogin
 	}
 }]);

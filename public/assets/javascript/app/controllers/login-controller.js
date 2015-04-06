@@ -1,5 +1,5 @@
 projectTrackerApp
-.controller('LoginController', ['$scope', '$rootScope', '$location', 'UserService', function($scope, $rootScope, $location, UserService){
+.controller('LoginController', ['$scope', '$rootScope', '$location', '$timeout', 'UserService', function($scope, $rootScope, $location, $timeout, UserService){
 	//ng-model to signup
 	$scope.user_signup = {firstName: null, lastName:null, email: null, password: null, confirm_password: null};
 
@@ -11,7 +11,9 @@ projectTrackerApp
 		UserService.authenticate($scope.user_signin)
 		.success(function(data, status, headers, config){
 			$rootScope.$emit('signin-message', {type: 'success', message: 'User is now signed in'});
-			$location.path('/projects');
+			$timeout(function(){
+				$location.path('/projects');
+			}, 500);
 		})
 		.error(function(data, status, headers, config){
 			$rootScope.$emit('signin-message', { type: 'error', message: data.error_message });
