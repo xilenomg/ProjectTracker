@@ -13,10 +13,8 @@ projectTrackerApp.service('AuthenticationService', ['$cookies', '$location', fun
 
 	var requireLogin = function(){
 		if ( !isUserLoggedIn() ){
-			console.log("false");
 			$location.path("/");
 		}
-		console.log("true");
 	};
 
 	return {

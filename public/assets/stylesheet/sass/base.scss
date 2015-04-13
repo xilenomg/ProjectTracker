@@ -108,6 +108,36 @@ body{
 		}
 	}
 
+	#releasesPage{
+		.releases{
+			.release{
+				margin-bottom: 10px;
+				border: 1px solid #EFEFEF;
+				padding:5px;
+				border-radius: 5px;
+				h3{
+					font-size: 15px;
+				}
+
+				&:hover{
+					background:#DFF0D8;
+				}
+			}
+		}
+	}
+
+	#addReleasePage{
+		background: #EFEFEF;
+		padding: 10px;
+		border: 1px solid #CECECE;
+		border-radius: 10px;
+		margin-bottom: 10px;
+
+		.row{
+			padding: 10px 0px;
+		}
+	}
+
 	.footer {
 		position: fixed;
 		bottom: 0;

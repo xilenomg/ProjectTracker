@@ -23,11 +23,24 @@ module.exports = function(app) {
 		ProjectsController.listAll(req, res, next);
 	});
 
+	app.get('/api/projects/:id_project', AuthenticationController.isUserLoggedIn, function(req, res, next){
+		ProjectsController.listOne(req, res, next);
+	});
+
 	app.post('/api/projects/register', AuthenticationController.isUserLoggedIn, function(req, res, next){
 		ProjectsController.register(req, res, next);
 	});
 
+	//API Releases
 	app.get('/api/projects/:id_project/releases/listAll', AuthenticationController.isUserLoggedIn, function(req, res, next){
 		ReleasesController.listAll(req, res, next);
+	});
+
+	app.post('/api/projects/:id_project/releases/register', AuthenticationController.isUserLoggedIn, function(req, res, next){
+		ReleasesController.register(req, res, next);
+	});
+
+	app.get('/api/projects/:id_project/releases/:id_release', AuthenticationController.isUserLoggedIn, function(req, res, next){
+		ReleasesController.listOne(req, res, next);
 	});
 };

@@ -1,0 +1,24 @@
+<div class="container-fluid" id="releasesPage">
+
+<div class="row custom-page-header">
+	<h3 class="pull-left">Releases from {{project.title}}</h3>
+	<button class="pull-right btn btn-lg btn-default" ng-click="toggleAddRelease()">add release</button>
+</div>
+
+<div class="add-release" ng-show="showAddRelease" id-project="{{project.id}}"></div>
+
+<div class="row">
+	<div class="releases container-fluid">
+		<div class="release" ng-repeat="release in releases">
+			<div class="row">
+				<div class="col-sm-7 col-md-7 col-lg-7 pull-left">
+					<h3>{{release.name}}</h3>
+				</div>
+				<div class="col-sm-5 col-md-5 col-lg-5">
+					<a href="#/projects/{{project.id}}/releases/{{release.id}}" class="btn btn-primary btn-md pull-right">See release</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

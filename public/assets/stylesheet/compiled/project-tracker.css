@@ -65,6 +65,23 @@ body {
     margin-bottom: 10px; }
     body #addProjectPage .row {
       padding: 10px 0px; }
+  body #releasesPage .releases .release {
+    margin-bottom: 10px;
+    border: 1px solid #EFEFEF;
+    padding: 5px;
+    border-radius: 5px; }
+    body #releasesPage .releases .release h3 {
+      font-size: 15px; }
+    body #releasesPage .releases .release:hover {
+      background: #DFF0D8; }
+  body #addReleasePage {
+    background: #EFEFEF;
+    padding: 10px;
+    border: 1px solid #CECECE;
+    border-radius: 10px;
+    margin-bottom: 10px; }
+    body #addReleasePage .row {
+      padding: 10px 0px; }
   body .footer {
     position: fixed;
     bottom: 0;

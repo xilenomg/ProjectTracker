@@ -18,12 +18,12 @@ module.exports = function(app){
 			field: 'name'
 		},
 		startDate: {
-			type: Sequelize.DATEONLY,
+			type: Sequelize.DATE,
 			field: 'start_date'
 		},
 		endDate: {
-			type: Sequelize.DATEONLY,
-			field: 'start_date'
+			type: Sequelize.DATE,
+			field: 'end_date'
 		},
 		createdAt: {
 			type: Sequelize.DATE,

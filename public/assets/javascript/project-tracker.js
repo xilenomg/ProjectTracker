@@ -28777,6 +28777,11 @@ projectTrackerApp.config([ '$routeProvider', function($routeProvider) {
 		title: 'Project Releases',
 		templateUrl: 'views/pages/project_releases.html',
 		controller: 'ProjectReleasesController'
+	})
+	.when('/projects/:id_project/releases/:id_release',{
+		title: 'Project Releases Cards',
+		templateUrl: 'views/pages/project_release_cards.html',
+		controller: 'ProjectReleaseCardsController'
 	});
 }]);
 projectTrackerApp.controller('HeaderController', [function(){
@@ -28874,6 +28879,113 @@ projectTrackerApp
 		link: linker
 	}
 }]);
+projectTrackerApp.
+controller('ProjectReleaseCardsController', ['$scope', '$route','ProjectService', 'ReleaseService', function($scope, $route, ProjectService, ReleaseService){
+	var params = $route.current.params;
+	var id_project = params.id_project;
+	var id_release = params.id_release;
+
+	ProjectService.listOne(id_project).success(function(project){
+		console.log(project);
+		if ( project ){
+			$scope.project = project
+			ReleaseService.listOne(id_project, id_release).success(function(release){
+				console.log(release);
+				$scope.release = release;
+			});
+		}
+	});
+
+}]);
+projectTrackerApp
+.controller('ProjectReleasesController',['$route', '$scope', '$rootScope','ReleaseService', 'ProjectService', function($route, $scope, $rootScope, ReleaseService, ProjectsService){
+	var id_project = $route.current.params.id_project;
+	
+	var showReleases = function(){
+		ProjectsService.listOne(id_project).success(function(data){
+			$scope.project = data;
+			ReleaseService.listReleasesFromProject(id_project).success(function(data){
+				$scope.releases = data;
+			});
+		});
+	};
+
+	//show or hide add release overlay
+	$scope.toggleAddRelease = function(){
+		console.log("toggle");
+		$scope.showAddRelease = $scope.showAddRelease ? false : true;
+	};
+
+	//Listener to relist all releases
+	$rootScope.$on('list-all-releases', function(event, args){
+		showReleases();
+	});
+
+	$rootScope.$on('add-release-close', function(event, args){
+		$scope.showAddRelease = false;
+	});
+
+	//hide add project overlay
+	$scope.showAddRelease = false;
+
+	//show projects
+	showReleases();
+}])
+.directive('addRelease', ['$rootScope', 'ReleaseService', function($rootScope, ReleaseService){
+	
+	var linker = function(scope, element, attrs){
+		scope.release = {name: null, start_date: null, end_date: null, id_project: null};
+
+		attrs.$observe('idProject',function(){
+			scope.release.id_project = attrs.idProject
+		});
+
+		scope.register = function(){
+			ReleaseService.register(scope.release).success(function(data){
+				$rootScope.$emit('add-release-message', {type: 'success', message: 'Release was added successfully'});
+				$rootScope.$emit('list-all-releases');
+				$rootScope.$emit('add-release-close');
+			}).error(function(data){
+				$rootScope.$emit('add-release-message', {type: 'error', message: data.message});
+			});
+		};
+	};
+
+	return {
+		restrict: 'C',
+		link: linker,
+		templateUrl: '/views/pages/add-release.html'
+	}
+}])
+.directive('addReleaseMessage', ['$rootScope', function($rootScope){
+	var linker = function(scope, element, attrs){
+		var setContent = function(type, message){
+			// remove css classes
+			element.removeClass('bg-success').removeClass('bg-danger');
+
+			//add proper css class
+			if ( type === 'success' ){
+				element.addClass('bg-success');
+			}
+			else if( type === 'error' ) {
+				element.addClass('bg-danger');
+			}
+
+			//change element message
+			element.html(message);
+		};
+
+		//Listen to event signup-message
+		$rootScope.$on('add-release-message', function (event, args){
+			setContent(args.type, args.message);
+		});
+	};
+
+	return {
+		restrict: 'C',
+		link: linker
+	}
+}]);;
 projectTrackerApp
 .controller('ProjectsController', ['$scope', '$rootScope', '$cookies', 'ProjectService', 'AuthenticationService', function($scope, $rootScope, $cookies, ProjectService, AuthenticationService){
 	AuthenticationService.requireLogin();
@@ -28976,10 +29088,8 @@ projectTrackerApp.service('AuthenticationService', ['$cookies', '$location', fun
 
 	var requireLogin = function(){
 		if ( !isUserLoggedIn() ){
-			console.log("false");
 			$location.path("/");
 		}
-		console.log("true");
 	};
 
 	return {
@@ -28993,14 +29103,38 @@ projectTrackerApp.service('ProjectService', ['$http', function($http){
 		return $http.get('/api/projects/listAll');
 	};
 
+	var listOne = function(id_project){
+		return $http.get('/api/projects/' + id_project);
+	}
+
 	var register = function(project){
 		return $http.post('/api/projects/register', project);
 	}
 
 	return {
 		listAll: listAll,
-		register: register
+		register: register,
+		listOne: listOne
 	}
+}]);
+projectTrackerApp.service('ReleaseService', ['$http', function($http){
+	var listReleasesFromProject = function(id_project){
+		return $http.get('/api/projects/' + id_project + '/releases/listAll');
+	};
+
+	var listOne = function(id_project, id_release){
+		return $http.get('/api/projects/' + id_project + '/releases/' + id_release);
+	}
+
+	var register = function(release){
+		return  $http.post('/api/projects/' + release.id_project + '/releases/register', release);
+	};
+
+	return {
+		listReleasesFromProject: listReleasesFromProject,
+		register: register,
+		listOne: listOne
+	};
 }]);
 projectTrackerApp.service('UserService', ['$http', function($http){
 	var register = function(user){

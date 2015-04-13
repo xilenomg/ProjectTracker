@@ -10,6 +10,7 @@ module.exports = {
 				id: {
 					type: Sequelize.INTEGER,
 					field: 'id_release',
+					autoIncrement: true,
 					primaryKey: true
 				},
 				idProject: {

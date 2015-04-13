@@ -22,5 +22,10 @@ projectTrackerApp.config([ '$routeProvider', function($routeProvider) {
 		title: 'Project Releases',
 		templateUrl: 'views/pages/project_releases.html',
 		controller: 'ProjectReleasesController'
+	})
+	.when('/projects/:id_project/releases/:id_release',{
+		title: 'Project Releases Cards',
+		templateUrl: 'views/pages/project_release_cards.html',
+		controller: 'ProjectReleaseCardsController'
 	});
 }]);
