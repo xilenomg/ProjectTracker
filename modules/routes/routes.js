@@ -3,6 +3,7 @@ module.exports = function(app) {
 	var AuthenticationController = require('../controllers/AuthenticationController.js')(app);
 	var ProjectsController = require('../controllers/ProjectsController.js')(app);
 	var ReleasesController = require('../controllers/ReleasesController.js')(app);
+	var CardsController = require('../controllers/CardsController.js')(app);
 
 	app.get('/', function(req, res, next){
 		HomerController.set(req, res, next);
@@ -42,5 +43,10 @@ module.exports = function(app) {
 
 	app.get('/api/projects/:id_project/releases/:id_release', AuthenticationController.isUserLoggedIn, function(req, res, next){
 		ReleasesController.listOne(req, res, next);
+	});
+
+	//API Cards
+	app.get('/api/projects/:id_project/releases/:id_release/cards', AuthenticationController.isUserLoggedIn, function(req, res, next){
+		CardsController.listAll(req, res, next);
 	});
 };
