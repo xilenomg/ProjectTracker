@@ -4,7 +4,8 @@ var projectTrackerApp = angular.module('projectTrackerApp', [
 	'ngResource',
 	'ngMessages',
 	'ngCookies',
-	'angularModalService'
+	'angularModalService',
+	'draganddrop'
 ]);
 
 projectTrackerApp.config([ '$routeProvider', function($routeProvider) {

@@ -49,4 +49,16 @@ module.exports = function(app) {
 	app.get('/api/projects/:id_project/releases/:id_release/cards', AuthenticationController.isUserLoggedIn, function(req, res, next){
 		CardsController.listAll(req, res, next);
 	});
+
+	app.get('/api/projects/:id_project/releases/:id_release/cards/:id_card', AuthenticationController.isUserLoggedIn, function(req, res, next){
+		CardsController.listOne(req, res, next);
+	});
+
+	app.post('/api/cards/register', AuthenticationController.isUserLoggedIn, function(req, res, next){
+		CardsController.register(req, res, next);
+	});
+
+	app.post('/api/cards/updateColumn', AuthenticationController.isUserLoggedIn, function(req, res, next){
+		CardsController.updateColumnCard(req, res, next);
+	});
 };

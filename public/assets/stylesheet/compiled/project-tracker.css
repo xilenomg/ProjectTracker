@@ -1,5 +1,5 @@
 html {
-  font-family: "jaf-facitweb","Helvetica Nueu", "arial", sans-serif;
+  font-family: "jaf-facitweb", "Helvetica Nueu", "arial", sans-serif;
   color: #4d4d4d; }
 
 body {
@@ -82,6 +82,68 @@ body {
     margin-bottom: 10px; }
     body #addReleasePage .row {
       padding: 10px 0px; }
+  body #cardsPage .cards {
+    padding: 1px; }
+    body #cardsPage .cards .cards-content {
+      border: 1px solid #EAEAEA;
+      margin: 10px; }
+      body #cardsPage .cards .cards-content h2 {
+        font-size: 14px;
+        text-align: center;
+        background: #EAEAEA;
+        margin: 0px;
+        padding: 3px;
+        border-bottom: 1px solid #EAEAEA; }
+      body #cardsPage .cards .cards-content .card {
+        margin: 15px;
+        border: 1px solid #CECECE; }
+        body #cardsPage .cards .cards-content .card h5 {
+          font-size: 12px;
+          background: #EAEAEA;
+          margin: 0px;
+          padding: 5px;
+          border-bottom: 1px solid #CECECE;
+          cursor: move; }
+        body #cardsPage .cards .cards-content .card .card-content {
+          padding: 3px;
+          text-size: 11px;
+          color: #666666; }
+      body #cardsPage .cards .cards-content .collection-empty {
+        height: 30px; }
+      body #cardsPage .cards .cards-content .collection-not-empty {
+        height: auto; }
+  body #cardsPage .cards-planned .cards-content {
+    border: 1px solid #000066; }
+    body #cardsPage .cards-planned .cards-content h2 {
+      background: #000066;
+      color: #FFFFFF;
+      border-bottom: 1px solid #000066; }
+    body #cardsPage .cards-planned .cards-content .card .card-content {
+      color: #000000; }
+  body #cardsPage .cards-dev .cards-content {
+    border: 1px solid #666600; }
+    body #cardsPage .cards-dev .cards-content h2 {
+      background: #666600;
+      color: #FFFFFF;
+      border-bottom: 1px solid #666600; }
+    body #cardsPage .cards-dev .cards-content .card .card-content {
+      color: #000000; }
+  body #cardsPage .cards-test .cards-content {
+    border: 1px solid #000000; }
+    body #cardsPage .cards-test .cards-content h2 {
+      background: #000000;
+      color: #FFFFFF;
+      border-bottom: 1px solid #000000; }
+    body #cardsPage .cards-test .cards-content .card .card-content {
+      color: #000000; }
+  body #cardsPage .cards-done .cards-content {
+    border: 1px solid #006600; }
+    body #cardsPage .cards-done .cards-content h2 {
+      background: #006600;
+      color: #FFFFFF;
+      border-bottom: 1px solid #006600; }
+    body #cardsPage .cards-done .cards-content .card .card-content {
+      color: #000000; }
   body .footer {
     position: fixed;
     bottom: 0;

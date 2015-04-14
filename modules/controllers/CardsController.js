@@ -16,26 +16,31 @@ module.exports = function(app) {
 		var id_release = req.params.id_release;
 
 		Models.User.find(id_user).then(function(user) {
-			if ( user ) {
-				user.getProjects({where:{id_project: id_project}}).then(function(project) {
-					if ( project && project.length > 0 ) {
-						project[0].getReleases({where: {id_release: id_release}}).then(function(release){
-							if ( release && release.length > 0 ){
-								release[0].getCards().then(function(cards){
+			if (user) {
+				user.getProjects({
+					where: {
+						id_project: id_project
+					}
+				}).then(function(project) {
+					if (project && project.length > 0) {
+						project[0].getReleases({
+							where: {
+								id_release: id_release
+							}
+						}).then(function(release) {
+							if (release && release.length > 0) {
+								release[0].getCards().then(function(cards) {
 									res.json(cards);
 								});
-							}
-							else{
+							} else {
 								res.json([]);
 							}
 						});
-					}
-					else{
+					} else {
 						res.json([]);
 					}
 				});
-			}
-			else{
+			} else {
 				res.json([]);
 			}
 		});
@@ -52,29 +57,66 @@ module.exports = function(app) {
 		var id_user = cookies.get('uid');
 		var id_project = req.params.id_project;
 		var id_release = req.params.id_release;
+		var id_card = req.params.id_card;
 
 		Models.User.find(id_user).then(function(user) {
-			if ( user ) {
-				user.getProjects({where:{id_project: id_project}}).then(function(project) {
-					if ( project && project.length > 0 ) {
-						project[0].getReleases({where: {id_release: id_release}}).then(function(release){
-							if ( release && release.length > 0 ){
-								release[0].getCards({where:{id_card: id_card}}).then(function(card){
+			if (user) {
+				user.getProjects({
+					where: {
+						id_project: id_project
+					}
+				}).then(function(project) {
+					if (project && project.length > 0) {
+						project[0].getReleases({
+							where: {
+								id_release: id_release
+							}
+						}).then(function(release) {
+							if (release && release.length > 0) {
+								release[0].getCards({
+									where: {
+										id_card: id_card
+									}
+								}).then(function(card) {
 									res.json(card);
 								});
-							}
-							else{
+							} else {
 								res.json([]);
 							}
 						});
-					}
-					else{
+					} else {
 						res.json([]);
 					}
 				});
-			}
-			else{
+			} else {
 				res.json([]);
+			}
+		});
+	};
+
+	/**
+	 * update Card column
+	 * @method POST
+	 * @required cookie('uid')
+	 * @params 
+	 */
+	var updateColumnCard = function(req, res, next) {
+		var cookies = new Cookies(req, res);
+		var id_user = cookies.get('uid');
+		var id_card = req.body.id_card;
+		var column = req.body.column;
+
+		Models.Card.find(id_card).then(function(card) {
+			if (card) {
+				console.log("---COLUMN---");
+				console.log(column);
+				card.updateAttributes({
+					status: column
+				}).success(function(card) {
+					res.json(card);
+				}).error(function(){
+					res.end();
+				});
 			}
 		});
 	};
@@ -120,6 +162,7 @@ module.exports = function(app) {
 	return {
 		listAll: listAll,
 		listOne: listOne,
-		register: register
+		register: register,
+		updateColumnCard: updateColumnCard
 	};
 };

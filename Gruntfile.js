@@ -10,6 +10,7 @@ module.exports = function(grunt) {
 					'node_modules/angular-modal-service/dst/angular-modal-service.js',
 					'node_modules/angular-resource/angular-resource.js',
 					'node_modules/angular-route/angular-route.js',
+					'node_modules/angular-draganddrop/angular-draganddrop.js',
 					'node_modules/jquery/dist/jquery.min.js',
 					'node_modules/bootstrap/dist/js/bootstrap.min.js',
 					'public/assets/javascript/app/app.js',

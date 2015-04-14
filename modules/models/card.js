@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 		id: {
 			type: Sequelize.INTEGER,
-			field: 'id_cards',
+			field: 'id_card',
 			autoIncrement: true,
 			primaryKey: true
 		},

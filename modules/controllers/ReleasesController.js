@@ -70,14 +70,12 @@ module.exports = function(app){
 
 		Models.Project.find({where:{id_project: id_project}}).then(function(project){
 			if ( project ){
-				console.log(project);
 				Models.Release.create({
 					name: name,
 					startDate: start_date,
 					endDate: end_date,
 					id_project: id_project
 				}).then(function(release){
-					console.log(release);
 					if ( release ){
 						res.json({
 							status: 'success',
