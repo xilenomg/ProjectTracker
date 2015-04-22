@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "ProjectTracker is where you will keep track of your project",
   "main": "index.js",
+  "engines": {
+    "node": "0.10.35"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
