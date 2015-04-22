@@ -4,7 +4,7 @@
   "description": "ProjectTracker is where you will keep track of your project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "bower install"
   },
   "repository": {
