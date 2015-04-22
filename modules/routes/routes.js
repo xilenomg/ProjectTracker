@@ -54,6 +54,10 @@ module.exports = function(app) {
 		CardsController.listOne(req, res, next);
 	});
 
+	app.get('/api/releases/byCard/:id_card', AuthenticationController.isUserLoggedIn, function(req, res, next){
+		ReleasesController.loadReleasesByCard(req, res, next);
+	});
+
 	app.post('/api/cards/register', AuthenticationController.isUserLoggedIn, function(req, res, next){
 		CardsController.register(req, res, next);
 	});

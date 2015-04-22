@@ -11,9 +11,14 @@ projectTrackerApp.service('ReleaseService', ['$http', function($http){
 		return  $http.post('/api/projects/' + release.id_project + '/releases/register', release);
 	};
 
+	var loadReleasesByCard = function(id_card){
+		return $http.get('/api/releases/byCard/' + id_card);
+	};
+
 	return {
 		listReleasesFromProject: listReleasesFromProject,
 		register: register,
-		listOne: listOne
+		listOne: listOne,
+		loadReleasesByCard: loadReleasesByCard
 	};
 }]);

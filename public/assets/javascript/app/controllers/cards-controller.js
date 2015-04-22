@@ -109,7 +109,7 @@ controller('ProjectReleaseCardsController', ['$scope', '$route', '$rootScope', '
 			templateUrl: '/views/pages/add-card.html'
 		}
 	}])
-	.directive('showCard', ['$rootScope', 'CardService', function($rootScope, CardService) {
+	.directive('showCard', ['$rootScope', 'CardService', 'ReleaseService', function($rootScope, CardService, ReleaseService) {
 
 		var link = function(scope, element, attrs) {
 			scope.show = function() {
@@ -126,18 +126,27 @@ controller('ProjectReleaseCardsController', ['$scope', '$route', '$rootScope', '
 					if (card) {
 						scope.show();
 						scope.card = card;
+
+						ReleaseService.loadReleasesByCard(card.id).success(function(releases) {
+							scope.releases = releases;
+						});
 					}
 				});
 			};
 
 			scope.updateField = function(field, value) {
-				var time_pattern = /[0-9]{2}:[0-5][0-9]/;
-				if (time_pattern.test(value)) {
+				if (field === 'timeSpent') {
+					var time_pattern = /[0-9]{2}:[0-5][0-9]/;
+					if (time_pattern.test(value)) {
+						CardService.updateCardField(scope.card.id, field, value).success(function(card) {
+							console.log("updated");
+						});
+					}
+				} else {
 					CardService.updateCardField(scope.card.id, field, value).success(function(card) {
 						console.log("updated");
 					});
 				}
-				console.log(field, value);
 			};
 
 			$rootScope.$on('show-card', function(event, data) {

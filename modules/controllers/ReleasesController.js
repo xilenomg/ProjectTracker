@@ -27,6 +27,24 @@ module.exports = function(app){
 		});
 	};
 
+	var loadReleasesByCard = function(req, res, next){
+		var cookies = new Cookies(req, res);
+		var id_card = req.params.id_card;
+		var id_user = cookies.get('uid');
+
+		Models.Card.find(id_card).then(function(card){
+			if ( card ){
+				card.getRelease().then(function(release){
+					if ( release ){
+						Models.Release.findAll({where:{id_project: release.id_project} }).then(function(releases){
+							res.json(releases);
+						});
+					}
+				});
+			}
+		});
+	};
+
 	var listOne = function(req, res, next){
 		var cookies = new Cookies(req, res);
 		var id_project = req.params.id_project;
@@ -105,6 +123,7 @@ module.exports = function(app){
 	return {
 		listAll: listAll,
 		register: register,
-		listOne: listOne
+		listOne: listOne,
+		loadReleasesByCard: loadReleasesByCard
 	}
 };
