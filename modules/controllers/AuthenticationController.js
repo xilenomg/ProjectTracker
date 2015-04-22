@@ -53,7 +53,7 @@ module.exports = function(app){
 						res.json({status: 'success', error_message: null, user: user });
 					}
 					else{
-						res.status(403).json({status: 'error', error_message: 'Error when creating user', user: null });	
+						res.status(403).json({status: 'error', error_message: 'Error when creating user', user: null });
 					}
 				});
 			}

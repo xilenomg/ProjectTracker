@@ -6,7 +6,8 @@
     "port": "3306",
     "username": "root",
     "database": "project-tracker",
-    "password": "root"
+    "password": "root",
+    "insecureAuth": true
   },
  
   "test": {
@@ -16,7 +17,8 @@
     "port": "3306",
     "username": "root",
     "database": "project-tracker",
-    "password": "root"
+    "password": "root",
+    "insecureAuth": true
   },
  
   "production": {
@@ -26,6 +28,7 @@
     "port": "3306",
     "username": "projecttracker",
     "database": "dataminas_projecttracker",
-    "password": "466987b0ecc88e39f2da7bcd10b3c3b9"
+    "password": "466987b0ecc88e39f2da7bcd10b3c3b9",
+    "insecureAuth": true
   }
 }
