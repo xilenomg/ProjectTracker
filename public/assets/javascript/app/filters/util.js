@@ -19,7 +19,15 @@ projectTrackerApp
 					value = value.substr(0, lastspace);
 				}
 			}
-			
+
 			return value + (tail || ' …');
+		};
+	}).filter('unsafe', function($sce) {
+		return function(val) {
+			return $sce.trustAsHtml(val);
+		};
+	}).filter('nl2br', function() {
+		return function(text) {
+			return text ? text.replace(/\n/g, '<br />') : '';
 		};
 	});

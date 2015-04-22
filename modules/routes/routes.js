@@ -50,12 +50,16 @@ module.exports = function(app) {
 		CardsController.listAll(req, res, next);
 	});
 
-	app.get('/api/projects/:id_project/releases/:id_release/cards/:id_card', AuthenticationController.isUserLoggedIn, function(req, res, next){
+	app.get('/api/cards/:id_card', AuthenticationController.isUserLoggedIn, function(req, res, next){
 		CardsController.listOne(req, res, next);
 	});
 
 	app.post('/api/cards/register', AuthenticationController.isUserLoggedIn, function(req, res, next){
 		CardsController.register(req, res, next);
+	});
+
+	app.post('/api/cards/:id_card/update', AuthenticationController.isUserLoggedIn, function(req, res, next){
+		CardsController.updateCardField(req, res, next);
 	});
 
 	app.post('/api/cards/updateColumn', AuthenticationController.isUserLoggedIn, function(req, res, next){

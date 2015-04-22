@@ -6,65 +6,16 @@
 		</div>
 		<button class="pull-right btn btn-lg btn-default" ng-click="toggleAddCard()">add card</button>
 	</div>
+	
+	<div class="add-card" ng-show="showAddCard" id-project="{{project.id}}" id-release="{{release.id}}"></div>
+
 	<div class="row">
-		<div class="cards cards-planned col-xs-12 col-sm-6 col-md-3 col-lg-3">
-			<div class="cards-content">
-				<h2>Planned</h2>
-				<div drop="onDrop('planned', $data, $event)" drop-effect="copy" drop-accept="'json/custom-object'" ng-class="isEmpty(plannedCards)">
-					<div ng-repeat="card in plannedCards | orderBy:'priority'" class="rows card" draggable="true" effect-allowed="copy" draggable-type="custom-object" draggable-data="{id: {{card.id}}}">
-						<h5>{{card.title | truncate:true:30:'...'}}</h5>
-						<div class="card-content">
-							<p>{{card.description | htmlToPlaintext | truncate:true:200:'...'}}</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		<column-card title="Planned" name="planned" collection="plannedCards"></column-card>
 
+		<column-card title="In Progress" name="dev" collection="devCards"></column-card>
 
-		<div class="cards cards-dev col-xs-12 col-sm-6 col-md-3 col-lg-3">
-			<div class="cards-content">
-				<h2>Dev</h2>
-				<div drop="onDrop('dev', $data, $event)" drop-effect="copy" drop-accept="'json/custom-object'" ng-class="isEmpty(devCards)">
-					<div ng-repeat="card in devCards | orderBy:'priority'" class="rows card" draggable="true" effect-allowed="copy" draggable-type="custom-object" draggable-data="{id: {{card.id}}}">
-						<h5>{{card.title | truncate:true:30:'...'}}</h5>
-						<div class="card-content">
-							<p>{{card.description | htmlToPlaintext | truncate:true:200:'...' }}</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		<column-card title="In Test" name="test" collection="testCards"></column-card>
 
-
-		<div class="cards cards-test col-xs-12 col-sm-6 col-md-3 col-lg-3">
-			<div class="cards-content">
-				<h2>Test</h2>
-				<div drop="onDrop('test', $data, $event)" drop-effect="copy" drop-accept="'json/custom-object'" ng-class="isEmpty(testCards)">
-					<div ng-repeat="card in testCards | orderBy:'priority'" class="rows card" draggable="true" effect-allowed="copy" draggable-type="custom-object" draggable-data="{id: {{card.id}}}">
-						<h5>{{card.title | truncate:true:30:'...'}}</h5>
-						<div class="card-content">
-							<p>{{card.description | htmlToPlaintext | truncate:true:200:'...' }}</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-
-		<div class="cards cards-done col-xs-12 col-sm-6 col-md-3 col-lg-3">
-			<div class="cards-content">
-				<h2>Done</h2>
-				<div drop="onDrop('done', $data, $event)" drop-effect="copy" drop-accept="'json/custom-object'" ng-class="isEmpty(doneCards)">
-					<div ng-repeat="card in doneCards | orderBy:'priority'" class="rows card" draggable="true" effect-allowed="copy" draggable-type="custom-object" draggable-data="{id: {{card.id}}}" >
-						<h5>{{card.title | truncate:true:30:'...'}}</h5>
-						<div class="card-content">
-							<p>{{card.description | htmlToPlaintext | truncate:true:200:'...' }}</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
+		<column-card title="Done" name="done" collection="doneCards"></column-card>
 	</div>
 </div>

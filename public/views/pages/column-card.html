@@ -1,0 +1,14 @@
+<div class="cards cards-{{name}} col-xs-12 col-sm-12 col-md-3 col-lg-3">
+	<div class="cards-content">
+		<h2>{{title}}</h2>
+		<div drop="onDrop(name, $data, $event)" drop-effect="copy" drop-accept="'json/custom-object'" ng-class="isEmpty(collection)">
+			<div ng-repeat="card in collection | orderBy:'priority'" class="rows card" draggable="true" effect-allowed="copy" draggable-type="custom-object" draggable-data="{id: {{card.id}}}">
+				<h5>{{card.title | truncate:true:100:'...'}}</h5>
+				<div class="card-content">
+					<p>{{card.description | htmlToPlaintext | truncate:true:200:'...'}}</p>
+				</div>
+				<span ng-click="showCard(card.id);" class="link show-details">show details</span>
+			</div>
+		</div>
+	</div>
+</div>

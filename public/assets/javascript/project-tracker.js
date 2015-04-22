@@ -28981,16 +28981,247 @@ projectTrackerApp.config([ '$routeProvider', function($routeProvider) {
 		controller: 'ProjectReleaseCardsController'
 	});
 }]);
+projectTrackerApp.
+controller('ProjectReleaseCardsController', ['$scope', '$route', '$rootScope', 'ProjectService', 'ReleaseService', 'CardService', 'filterFilter', function($scope, $route, $rootScope, ProjectService, ReleaseService, CardService, filterFilter) {
+		var params = $route.current.params;
+		var id_project = params.id_project;
+		var id_release = params.id_release;
+
+		var loadCards = function(id_project, id_release) {
+			CardService.listCardsFromRelease(id_project, id_release).success(function(cards) {
+				$scope.cards = cards;
+
+				$scope.plannedCards = filterFilter($scope.cards, function(item, index) {
+					if (item.status === 'planned') {
+						return item;
+					}
+				});
+
+				$scope.devCards = filterFilter($scope.cards, function(item, index) {
+					if (item.status === 'dev') {
+						return item;
+					}
+				});
+
+				$scope.testCards = filterFilter($scope.cards, function(item, index) {
+					if (item.status === 'test') {
+						return item;
+					}
+				});
+
+				$scope.doneCards = filterFilter($scope.cards, function(item, index) {
+					if (item.status === 'done') {
+						return item;
+					}
+				});
+
+			});
+		};
+
+		//Listener to relist all cards
+		$rootScope.$on('list-all-cards', function(event, args) {
+			loadCards(id_project, id_release);
+		});
+
+		$rootScope.$on('add-cards-close', function(event, args) {
+			$scope.showAddCard = false;
+		});
+
+		//hide add card overlay
+		$scope.showAddCard = false;
+
+		ProjectService.listOne(id_project).success(function(project) {
+			if (project) {
+				$scope.project = project
+				ReleaseService.listOne(id_project, id_release).success(function(release) {
+					if (release && release.length > 0) {
+						$scope.release = release[0];
+						loadCards(id_project, id_release);
+					}
+				});
+			}
+		});
+
+
+		//show or hide add card overlay
+		$scope.toggleAddCard = function() {
+			$scope.showAddCard = $scope.showAddCard ? false : true;
+		};
+
+	}])
+	.directive('addCard', ['$rootScope', 'CardService', function($rootScope, CardService) {
+
+		var linker = function(scope, element, attrs) {
+			var clearCardScope = function() {
+				scope.card = {
+					title: null,
+					description: null,
+					status: null,
+					estimated_time: null,
+					id_release: (scope.card && scope.card.id_release ? scope.card.id_release : null)
+				};
+			};
+
+			clearCardScope();
+
+			attrs.$observe('idRelease', function() {
+				scope.card.id_release = attrs.idRelease;
+			});
+
+			scope.register = function() {
+				CardService.register(scope.card).success(function(data) {
+					$rootScope.$emit('add-card-message', {
+						type: 'success',
+						message: 'Card was added successfully'
+					});
+					$rootScope.$emit('list-all-cards');
+					$rootScope.$emit('add-cards-close');
+					clearCardScope();
+				}).error(function(data) {
+					$rootScope.$emit('add-card-message', {
+						type: 'error',
+						message: data.message
+					});
+				});
+			};
+		};
+
+		return {
+			restrict: 'C',
+			link: linker,
+			templateUrl: '/views/pages/add-card.html'
+		}
+	}])
+	.directive('showCard', ['$rootScope', 'CardService', function($rootScope, CardService) {
+
+		var link = function(scope, element, attrs) {
+			scope.show = function() {
+				element.removeClass('hide');
+			};
+
+			scope.hide = function() {
+				element.addClass('hide');
+			};
+
+			scope.listOne = function(id_card) {
+				scope.card = {};
+				CardService.listOne(id_card).success(function(card) {
+					if (card) {
+						scope.show();
+						scope.card = card;
+					}
+				});
+			};
+
+			scope.updateField = function(field, value) {
+				var time_pattern = /[0-9]{2}:[0-5][0-9]/;
+				if (time_pattern.test(value)) {
+					CardService.updateCardField(scope.card.id, field, value).success(function(card) {
+						console.log("updated");
+					});
+				}
+				console.log(field, value);
+			};
+
+			$rootScope.$on('show-card', function(event, data) {
+				if (data && data.id_card) {
+					scope.listOne(data.id_card);
+				}
+			});
+		};
+
+
+
+		return {
+			restrict: 'E',
+			templateUrl: '/views/pages/card.html',
+			link: link
+		}
+	}])
+	.directive('addCardMessage', ['$rootScope', function($rootScope) {
+		var linker = function(scope, element, attrs) {
+			var setContent = function(type, message) {
+				// remove css classes
+				element.removeClass('bg-success').removeClass('bg-danger');
+
+				//add proper css class
+				if (type === 'success') {
+					element.addClass('bg-success');
+				} else if (type === 'error') {
+					element.addClass('bg-danger');
+				}
+
+				//change element message
+				element.html(message);
+			};
+
+			//Listen to event signup-message
+			$rootScope.$on('add-card-message', function(event, args) {
+				setContent(args.type, args.message);
+			});
+		};
+
+		return {
+			restrict: 'C',
+			link: linker
+		}
+	}])
+	.directive('columnCard', ['$rootScope', '$timeout', 'CardService', function($rootScope, $timeout, CardService) {
+
+		var linker = function(scope, element, attrs) {
+			$timeout(function() {
+				scope.name = attrs.name;
+				scope.title = attrs.title;
+			}, 200);
+
+			scope.onDrop = function(column, data, event) {
+				console.log(column, data, event);
+				var cardObjectData = data['json/custom-object'];
+				CardService.updateColumnCard(cardObjectData.id, column).success(function() {
+					$rootScope.$emit('list-all-cards');
+				});
+			};
+
+			scope.onDragOver = function(event) {};
+
+			scope.showCard = function(id_card) {
+				$rootScope.$emit('show-card', {
+					id_card: id_card
+				});
+			};
+
+			scope.isEmpty = function(collection) {
+				if (typeof collection === "undefined" || collection.length === 0) {
+					return 'collection-empty';
+				} else {
+					return 'collection-not-empty';
+				}
+			};
+		};
+
+		return {
+			restrict: 'E',
+			link: linker,
+			scope: {
+				collection: "="
+			},
+			templateUrl: '/views/pages/column-card.html'
+		}
+	}]);
 projectTrackerApp.controller('HeaderController', [function(){
 	console.log("HeaderController");
 }]);
 projectTrackerApp
-.controller('LoginController', ['$scope', '$rootScope', '$location', '$timeout', 'UserService', function($scope, $rootScope, $location, $timeout, UserService){
+.controller('LoginController', ['$scope', '$rootScope', '$location', '$timeout', 'UserService', 'AuthenticationService', function($scope, $rootScope, $location, $timeout, UserService, AuthenticationService){
 	//ng-model to signup
 	$scope.user_signup = {firstName: null, lastName:null, email: null, password: null, confirm_password: null};
 
 	//ng-model to signin
 	$scope.user_signin = {email: null, password: null};
+
+	if ( AuthenticationService.isUserLoggedIn() ){
+		$location.path('/projects');
+	}
 
 	//form submit to authenticate
 	$scope.authenticate = function(){
@@ -29076,72 +29307,97 @@ projectTrackerApp
 		link: linker
 	}
 }]);
-projectTrackerApp.
-controller('ProjectReleaseCardsController', ['$scope', '$route', 'ProjectService', 'ReleaseService', 'CardService', 'filterFilter', function($scope, $route, ProjectService, ReleaseService, CardService, filterFilter) {
-	var params = $route.current.params;
-	var id_project = params.id_project;
-	var id_release = params.id_release;
+projectTrackerApp
+.controller('ProjectsController', ['$scope', '$rootScope', '$cookies', 'ProjectService', 'AuthenticationService', function($scope, $rootScope, $cookies, ProjectService, AuthenticationService){
+	AuthenticationService.requireLogin();
 
-	var loadCards = function(id_project, id_release) {
-		CardService.listCardsFromRelease(id_project, id_release).success(function(cards) {
-			$scope.cards = cards;
-
-			$scope.plannedCards = filterFilter($scope.cards, function(item, index){
-				if ( item.status === 'planned' ){
-					return item;
-				}
-			});
-
-			$scope.devCards = filterFilter($scope.cards, function(item, index){
-				if ( item.status === 'dev' ){
-					return item;
-				}
-			});
-
-			$scope.testCards = filterFilter($scope.cards, function(item, index){
-				if ( item.status === 'test' ){
-					return item;
-				}
-			});
-
-			$scope.doneCards = filterFilter($scope.cards, function(item, index){
-				if ( item.status === 'done' ){
-					return item;
-				}
-			});
-
+	//show projects function
+	var showProjects = function(){
+		ProjectService.listAll()
+		.success(function(data, status, headers, config){
+			$scope.projects = data;
+		})
+		.error(function(data, status, headers, config){
+			$scope.projects = null;
 		});
 	};
 
-	ProjectService.listOne(id_project).success(function(project) {
-		if (project) {
-			$scope.project = project
-			ReleaseService.listOne(id_project, id_release).success(function(release) {
-				if ( release && release.length > 0 ){
-					$scope.release = release[0];
-					loadCards(id_project, id_release);
-				}
-			});
-		}
+	//show or hide add project overlay
+	$scope.toggleAddProject = function(){
+		$scope.showAddProject = $scope.showAddProject ? false : true;
+	};
+
+	//Listener to relist all projects
+	$rootScope.$on('list-all-projects', function(event, args){
+		showProjects();
 	});
 
-	$scope.isEmpty = function(collection){
-		if ( typeof collection === "undefined" || collection.length === 0 ) {
-			return 'collection-empty';
-		}
-		else{
-			return 'collection-not-empty';
-		}
+	$rootScope.$on('add-projects-close', function(event, args){
+		$scope.showAddProject = false;
+	});
+
+	//hide add project overlay
+	$scope.showAddProject = false;
+
+	//show projects
+	showProjects();
+
+}])
+.directive('addProject', ['$rootScope', 'ProjectService', function($rootScope, ProjectService){
+	
+	var linker = function(scope, element, attrs){
+		var clearProjectScope = function(){
+			scope.project = {title: null, description: null};
+		};
+
+		clearProjectScope();
+
+		scope.register = function(){
+			ProjectService.register(scope.project).success(function(data){
+				$rootScope.$emit('add-project-message', {type: 'success', message: 'Project was added successfully'});
+				$rootScope.$emit('list-all-projects');
+				$rootScope.$emit('add-projects-close');
+				clearProjectScope();
+			}).error(function(data){
+				$rootScope.$emit('add-project-message', {type: 'error', message: data.message});
+			});
+		};
 	};
 
-	$scope.onDrop = function(column, data, event) {
-		var cardObjectData = data['json/custom-object'];
-		CardService.updateColumnCard(cardObjectData.id, column).success(function() {
-			loadCards(id_project, id_release);
+	return {
+		restrict: 'C',
+		link: linker,
+		templateUrl: '/views/pages/add-project.html'
+	}
+}])
+.directive('addProjectMessage', ['$rootScope', function($rootScope){
+	var linker = function(scope, element, attrs){
+		var setContent = function(type, message){
+			// remove css classes
+			element.removeClass('bg-success').removeClass('bg-danger');
+
+			//add proper css class
+			if ( type === 'success' ){
+				element.addClass('bg-success');
+			}
+			else if( type === 'error' ) {
+				element.addClass('bg-danger');
+			}
+
+			//change element message
+			element.html(message);
+		};
+
+		//Listen to event signup-message
+		$rootScope.$on('add-project-message', function (event, args){
+			setContent(args.type, args.message);
 		});
 	};
 
-	$scope.onDragOver = function(event) {};
+	return {
+		restrict: 'C',
+		link: linker
+	}
 }]);
 projectTrackerApp
 .controller('ProjectReleasesController',['$route', '$scope', '$rootScope','ReleaseService', 'ProjectService', function($route, $scope, $rootScope, ReleaseService, ProjectsService){
@@ -29233,93 +29489,6 @@ projectTrackerApp
 	}
 }]);;
 projectTrackerApp
-.controller('ProjectsController', ['$scope', '$rootScope', '$cookies', 'ProjectService', 'AuthenticationService', function($scope, $rootScope, $cookies, ProjectService, AuthenticationService){
-	AuthenticationService.requireLogin();
-
-	//show projects function
-	var showProjects = function(){
-		ProjectService.listAll()
-		.success(function(data, status, headers, config){
-			$scope.projects = data;
-		})
-		.error(function(data, status, headers, config){
-			$scope.projects = null;
-		});
-	};
-
-	//show or hide add project overlay
-	$scope.toggleAddProject = function(){
-		$scope.showAddProject = $scope.showAddProject ? false : true;
-	};
-
-	//Listener to relist all projects
-	$rootScope.$on('list-all-projects', function(event, args){
-		showProjects();
-	});
-
-	$rootScope.$on('add-projects-close', function(event, args){
-		$scope.showAddProject = false;
-	});
-
-	//hide add project overlay
-	$scope.showAddProject = false;
-
-	//show projects
-	showProjects();
-
-}])
-.directive('addProject', ['$rootScope', 'ProjectService', function($rootScope, ProjectService){
-	
-	var linker = function(scope, element, attrs){
-		scope.project = {title: null, description: null};
-
-		scope.register = function(){
-			ProjectService.register(scope.project).success(function(data){
-				$rootScope.$emit('add-project-message', {type: 'success', message: 'Project was added successfully'});
-				$rootScope.$emit('list-all-projects');
-				$rootScope.$emit('add-projects-close');
-			}).error(function(data){
-				$rootScope.$emit('add-project-message', {type: 'error', message: data.message});
-			});
-		};
-	};
-
-	return {
-		restrict: 'C',
-		link: linker,
-		templateUrl: '/views/pages/add-project.html'
-	}
-}])
-.directive('addProjectMessage', ['$rootScope', function($rootScope){
-	var linker = function(scope, element, attrs){
-		var setContent = function(type, message){
-			// remove css classes
-			element.removeClass('bg-success').removeClass('bg-danger');
-
-			//add proper css class
-			if ( type === 'success' ){
-				element.addClass('bg-success');
-			}
-			else if( type === 'error' ) {
-				element.addClass('bg-danger');
-			}
-
-			//change element message
-			element.html(message);
-		};
-
-		//Listen to event signup-message
-		$rootScope.$on('add-project-message', function (event, args){
-			setContent(args.type, args.message);
-		});
-	};
-
-	return {
-		restrict: 'C',
-		link: linker
-	}
-}]);;
-projectTrackerApp
 	.filter('htmlToPlaintext', function() {
 		return function(text) {
 			return String(text).replace(/<[^>]+>/gm, '');
@@ -29340,8 +29509,16 @@ projectTrackerApp
 					value = value.substr(0, lastspace);
 				}
 			}
-			
+
 			return value + (tail || ' …');
+		};
+	}).filter('unsafe', function($sce) {
+		return function(val) {
+			return $sce.trustAsHtml(val);
+		};
+	}).filter('nl2br', function() {
+		return function(text) {
+			return text ? text.replace(/\n/g, '<br />') : '';
 		};
 	});
 projectTrackerApp.service('AuthenticationService', ['$cookies', '$location', function($cookies, $location){
@@ -29374,13 +29551,17 @@ projectTrackerApp.service('CardService', ['$http', function($http){
 		return $http.get('/api/projects/' + id_project + '/releases/' + id_release + '/cards');
 	};
 
-	var listOne = function(id_project, id_release, id_card){
-		return $http.get('/api/projects/' + id_project + '/releases/' + id_release + '/cards/' + id_card);
-	}
+	var listOne = function(id_card){
+		return $http.get('/api/cards/' + id_card);
+	};
 
 	var updateColumnCard = function(id_card, column){
 		return $http.post('/api/cards/updateColumn', {id_card: id_card, column: column});
-	}
+	};
+
+	var updateCardField = function(id_card, field, value){
+		return $http.post('/api/cards/' + id_card + '/update', {id_card: id_card, field: field, value: value});
+	};
 
 	var register = function(card){
 		return  $http.post('/api/cards/register', card);
@@ -29390,7 +29571,8 @@ projectTrackerApp.service('CardService', ['$http', function($http){
 		listCardsFromRelease: listCardsFromRelease,
 		register: register,
 		listOne: listOne,
-		updateColumnCard: updateColumnCard
+		updateColumnCard: updateColumnCard,
+		updateCardField: updateCardField
 	};
 }]);
 projectTrackerApp.service('ProjectService', ['$http', function($http){

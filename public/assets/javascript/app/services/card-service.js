@@ -3,13 +3,17 @@ projectTrackerApp.service('CardService', ['$http', function($http){
 		return $http.get('/api/projects/' + id_project + '/releases/' + id_release + '/cards');
 	};
 
-	var listOne = function(id_project, id_release, id_card){
-		return $http.get('/api/projects/' + id_project + '/releases/' + id_release + '/cards/' + id_card);
-	}
+	var listOne = function(id_card){
+		return $http.get('/api/cards/' + id_card);
+	};
 
 	var updateColumnCard = function(id_card, column){
 		return $http.post('/api/cards/updateColumn', {id_card: id_card, column: column});
-	}
+	};
+
+	var updateCardField = function(id_card, field, value){
+		return $http.post('/api/cards/' + id_card + '/update', {id_card: id_card, field: field, value: value});
+	};
 
 	var register = function(card){
 		return  $http.post('/api/cards/register', card);
@@ -19,6 +23,7 @@ projectTrackerApp.service('CardService', ['$http', function($http){
 		listCardsFromRelease: listCardsFromRelease,
 		register: register,
 		listOne: listOne,
-		updateColumnCard: updateColumnCard
+		updateColumnCard: updateColumnCard,
+		updateCardField: updateCardField
 	};
 }]);

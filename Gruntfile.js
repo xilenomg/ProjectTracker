@@ -75,10 +75,12 @@ module.exports = function(grunt) {
 			}
 		},
 		copy: {
-			files: [{
-				src: 'node_modules/fonts/**/*',
-				dest: 'public/assets/fonts'
-			}]
+			files: {
+				cwd: 'node_modules/bootstrap/fonts',
+				src: '**/*',
+				dest: 'public/assets/fonts',
+				expand: true
+			}
 		}
 	});
 grunt.registerTask('default', ['watch', 'sass:dist', 'copy']);

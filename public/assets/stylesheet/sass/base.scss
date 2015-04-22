@@ -15,8 +15,17 @@ body {
 	a {
 		color: inherit;
 	}
+	.mask {
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		right: 0px;
+		bottom: 0px;
+		background: rgba(0, 0, 0, 0.6);
+		z-index: 2000;
+	}
 	.header {
-		background: #FFFFFF;
+		background: #4ca4d5;
 		border-bottom: 1px solid #EFEFEF;
 	}
 	.custom-page-header {
@@ -124,12 +133,14 @@ body {
 			.cards-content {
 				border: 1px solid #EAEAEA;
 				margin: 10px;
+				overflow: hidden;
+				border-radius: 5px;
 				h2 {
 					font-size: 14px;
 					text-align: center;
 					background: #EAEAEA;
 					margin: 0px;
-					padding: 3px;
+					padding: 5px;
 					border-bottom: 1px solid #EAEAEA;
 				}
 				.card {
@@ -145,84 +156,137 @@ body {
 					}
 					.card-content {
 						padding: 3px;
-						text-size: 11px;
-						color: #666666;
+						font-size: 11px;
+						color: #787878;
+					}
+					.link {
+						cursor: pointer;
+					}
+					.show-details {
+						font-size: 11px;
+						padding-left: 3px;
+						&:hover {
+							text-decoration: underline;
+						}
 					}
 				}
-
-				.collection-empty{
+				.collection-empty {
 					height: 30px;
 				}
-
-				.collection-not-empty{
+				.collection-not-empty {
 					height: auto;
 				}
 			}
 		}
 		.cards-planned {
 			.cards-content {
-				border: 1px solid #000066;
+				border: 1px solid #CECEEF;
 				h2 {
-					background: #000066;
-					color: #FFFFFF;
-					border-bottom: 1px solid #000066;
+					background: #CECEEF;
+					color: #666699;
+					border-bottom: 1px solid #CECEEF;
 				}
 				.card {
-					h5 {}
-					.card-content {
-						color: #000000;
+					h5 {
+						background: #CECEEF;
+						color: #666699;
 					}
 				}
 			}
 		}
 		.cards-dev {
 			.cards-content {
-				border: 1px solid #666600;
+				border: 1px solid #CEEFCE;
 				h2 {
-					background: #666600;
-					color: #FFFFFF;
-					border-bottom: 1px solid #666600;
+					background: #CEEFCE;
+					color: #669966;
+					border-bottom: 1px solid #CEEFCE;
 				}
 				.card {
-					h5 {}
-					.card-content {
-						color: #000000;
+					border-bottom: 1px solid #CEEFCE;
+					h5 {
+						background: #CEEFCE;
+						color: #669966;
 					}
 				}
 			}
 		}
 		.cards-test {
 			.cards-content {
-				border: 1px solid #000000;
+				border: 1px solid #CECECE;
 				h2 {
-					background: #000000;
-					color: #FFFFFF;
-					border-bottom: 1px solid #000000;
+					background: #CECECE;
+					color: #666666;
+					border-bottom: 1px solid #CECECE;
 				}
 				.card {
-					h5 {}
-					.card-content {
-						color: #000000;
+					border: 1px solid #CECECE;
+					h5 {
+						background: #CECECE;
+						color: #666666;
 					}
 				}
 			}
 		}
 		.cards-done {
 			.cards-content {
-				border: 1px solid #006600;
+				border: 1px solid #EFCECE;
 				h2 {
-					background: #006600;
-					color: #FFFFFF;
-					border-bottom: 1px solid #006600;
+					background: #EFCECE;
+					color: #996666;
+					border-bottom: 1px solid #EFCECE;
 				}
 				.card {
-					h5 {}
-					.card-content {
-						color: #000000;
+					border: 1px solid #EFCECE;
+					h5 {
+						background: #EFCECE;
+						color: #996666;
 					}
 				}
 			}
 		}
+	}
+	#addCardPage {
+		background: #EFEFEF;
+		padding: 10px;
+		border: 1px solid #CECECE;
+		border-radius: 10px;
+		margin-bottom: 10px;
+		.row {
+			padding: 10px 0px;
+		}
+	}
+	.card-overlay {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		right: 10px;
+		bottom: 10px;
+		background: #FFFFFF;
+		border-radius: 5px;
+		overflow: auto;
+		h1 {
+			font-size: 20px;
+			padding: 10px;
+			margin: 0;
+			border-bottom: 1px solid #CECECE;
+			color: #4ca4d5;
+		}
+		.card-content {
+			padding: 10px;
+		}
+		.close {
+			position: absolute;
+			top: 9px;
+			right: 5px;
+			font-size: 15px;
+			color: #990000;
+		}
+		.legend{
+			font-size: #AEAEAE;
+			font-size: 11px;
+		}
+		footer {}
 	}
 	.footer {
 		position: fixed;

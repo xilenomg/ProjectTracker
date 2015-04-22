@@ -1,0 +1,30 @@
+<div class="mask">
+	<div class="card-overlay">
+		<h1>{{card.title}}</h1>
+		<span class="glyphicon glyphicon-remove close" ng-click="hide();" aria-hidden="true"></span>
+		<div class="card-content">
+			<div class="description">
+				<h4>Description</h4>
+				<pre>{{card.description}}</pre>
+			</div>
+			<footer>
+				<div class="row">
+					<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+						<h4>Estimated time:</h4>
+						<div>{{card.estimatedTime}}</div>
+					</div>
+					<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+						<h4>Time spent:<span class="legend">00h00min</span></h4>
+						<div>
+							<input class="form-control" ng-model="card.timeSpent" placeholder="00:00" ng-blur="updateField('timeSpent', card.timeSpent);" />
+						</div>
+					</div>
+					<div class="col-xs-12x col-sm-4 col-md-4 col-lg-4">
+						<h4>Status:</h4>
+						<div>{{card.status}}</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+</div>

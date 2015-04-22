@@ -12,8 +12,16 @@ body {
     margin-bottom: 10px; }
   body a {
     color: inherit; }
+  body .mask {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2000; }
   body .header {
-    background: #FFFFFF;
+    background: #4ca4d5;
     border-bottom: 1px solid #EFEFEF; }
   body .custom-page-header {
     border-bottom: 1px solid #EFEFEF;
@@ -86,13 +94,15 @@ body {
     padding: 1px; }
     body #cardsPage .cards .cards-content {
       border: 1px solid #EAEAEA;
-      margin: 10px; }
+      margin: 10px;
+      overflow: hidden;
+      border-radius: 5px; }
       body #cardsPage .cards .cards-content h2 {
         font-size: 14px;
         text-align: center;
         background: #EAEAEA;
         margin: 0px;
-        padding: 3px;
+        padding: 5px;
         border-bottom: 1px solid #EAEAEA; }
       body #cardsPage .cards .cards-content .card {
         margin: 15px;
@@ -106,44 +116,95 @@ body {
           cursor: move; }
         body #cardsPage .cards .cards-content .card .card-content {
           padding: 3px;
-          text-size: 11px;
-          color: #666666; }
+          font-size: 11px;
+          color: #787878; }
+        body #cardsPage .cards .cards-content .card .link {
+          cursor: pointer; }
+        body #cardsPage .cards .cards-content .card .show-details {
+          font-size: 11px;
+          padding-left: 3px; }
+          body #cardsPage .cards .cards-content .card .show-details:hover {
+            text-decoration: underline; }
       body #cardsPage .cards .cards-content .collection-empty {
         height: 30px; }
       body #cardsPage .cards .cards-content .collection-not-empty {
         height: auto; }
   body #cardsPage .cards-planned .cards-content {
-    border: 1px solid #000066; }
+    border: 1px solid #CECEEF; }
     body #cardsPage .cards-planned .cards-content h2 {
-      background: #000066;
-      color: #FFFFFF;
-      border-bottom: 1px solid #000066; }
-    body #cardsPage .cards-planned .cards-content .card .card-content {
-      color: #000000; }
+      background: #CECEEF;
+      color: #666699;
+      border-bottom: 1px solid #CECEEF; }
+    body #cardsPage .cards-planned .cards-content .card h5 {
+      background: #CECEEF;
+      color: #666699; }
   body #cardsPage .cards-dev .cards-content {
-    border: 1px solid #666600; }
+    border: 1px solid #CEEFCE; }
     body #cardsPage .cards-dev .cards-content h2 {
-      background: #666600;
-      color: #FFFFFF;
-      border-bottom: 1px solid #666600; }
-    body #cardsPage .cards-dev .cards-content .card .card-content {
-      color: #000000; }
+      background: #CEEFCE;
+      color: #669966;
+      border-bottom: 1px solid #CEEFCE; }
+    body #cardsPage .cards-dev .cards-content .card {
+      border-bottom: 1px solid #CEEFCE; }
+      body #cardsPage .cards-dev .cards-content .card h5 {
+        background: #CEEFCE;
+        color: #669966; }
   body #cardsPage .cards-test .cards-content {
-    border: 1px solid #000000; }
+    border: 1px solid #CECECE; }
     body #cardsPage .cards-test .cards-content h2 {
-      background: #000000;
-      color: #FFFFFF;
-      border-bottom: 1px solid #000000; }
-    body #cardsPage .cards-test .cards-content .card .card-content {
-      color: #000000; }
+      background: #CECECE;
+      color: #666666;
+      border-bottom: 1px solid #CECECE; }
+    body #cardsPage .cards-test .cards-content .card {
+      border: 1px solid #CECECE; }
+      body #cardsPage .cards-test .cards-content .card h5 {
+        background: #CECECE;
+        color: #666666; }
   body #cardsPage .cards-done .cards-content {
-    border: 1px solid #006600; }
+    border: 1px solid #EFCECE; }
     body #cardsPage .cards-done .cards-content h2 {
-      background: #006600;
-      color: #FFFFFF;
-      border-bottom: 1px solid #006600; }
-    body #cardsPage .cards-done .cards-content .card .card-content {
-      color: #000000; }
+      background: #EFCECE;
+      color: #996666;
+      border-bottom: 1px solid #EFCECE; }
+    body #cardsPage .cards-done .cards-content .card {
+      border: 1px solid #EFCECE; }
+      body #cardsPage .cards-done .cards-content .card h5 {
+        background: #EFCECE;
+        color: #996666; }
+  body #addCardPage {
+    background: #EFEFEF;
+    padding: 10px;
+    border: 1px solid #CECECE;
+    border-radius: 10px;
+    margin-bottom: 10px; }
+    body #addCardPage .row {
+      padding: 10px 0px; }
+  body .card-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    overflow: auto; }
+    body .card-overlay h1 {
+      font-size: 20px;
+      padding: 10px;
+      margin: 0;
+      border-bottom: 1px solid #CECECE;
+      color: #4ca4d5; }
+    body .card-overlay .card-content {
+      padding: 10px; }
+    body .card-overlay .close {
+      position: absolute;
+      top: 9px;
+      right: 5px;
+      font-size: 15px;
+      color: #990000; }
+    body .card-overlay .legend {
+      font-size: #AEAEAE;
+      font-size: 11px; }
   body .footer {
     position: fixed;
     bottom: 0;

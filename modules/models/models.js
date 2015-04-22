@@ -8,7 +8,10 @@ module.exports = function(app){
 	User.belongsToMany(Project, {through: UserProject, foreignKey: 'id_user'});
 	Project.belongsToMany(User, {through: UserProject, foreignKey: 'id_project'});
 	Project.hasMany(Release, {foreignKey: 'id_project'});
-	Release.hasMany(Card, {foreignKey: 'id_release'})
+	Release.hasMany(Card, {foreignKey: 'id_release'});
+
+	Release.belongsTo(Project, {foreignKey: 'id_project'});
+	Card.belongsTo(Release, {foreignKey: 'id_release'});
 
 	return {
 		Project: Project,

@@ -37,13 +37,18 @@ projectTrackerApp
 .directive('addProject', ['$rootScope', 'ProjectService', function($rootScope, ProjectService){
 	
 	var linker = function(scope, element, attrs){
-		scope.project = {title: null, description: null};
+		var clearProjectScope = function(){
+			scope.project = {title: null, description: null};
+		};
+
+		clearProjectScope();
 
 		scope.register = function(){
 			ProjectService.register(scope.project).success(function(data){
 				$rootScope.$emit('add-project-message', {type: 'success', message: 'Project was added successfully'});
 				$rootScope.$emit('list-all-projects');
 				$rootScope.$emit('add-projects-close');
+				clearProjectScope();
 			}).error(function(data){
 				$rootScope.$emit('add-project-message', {type: 'error', message: data.message});
 			});
@@ -84,4 +89,4 @@ projectTrackerApp
 		restrict: 'C',
 		link: linker
 	}
-}]);;
+}]);

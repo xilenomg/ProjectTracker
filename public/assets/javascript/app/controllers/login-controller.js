@@ -1,10 +1,14 @@
 projectTrackerApp
-.controller('LoginController', ['$scope', '$rootScope', '$location', '$timeout', 'UserService', function($scope, $rootScope, $location, $timeout, UserService){
+.controller('LoginController', ['$scope', '$rootScope', '$location', '$timeout', 'UserService', 'AuthenticationService', function($scope, $rootScope, $location, $timeout, UserService, AuthenticationService){
 	//ng-model to signup
 	$scope.user_signup = {firstName: null, lastName:null, email: null, password: null, confirm_password: null};
 
 	//ng-model to signin
 	$scope.user_signin = {email: null, password: null};
+
+	if ( AuthenticationService.isUserLoggedIn() ){
+		$location.path('/projects');
+	}
 
 	//form submit to authenticate
 	$scope.authenticate = function(){
