@@ -25,7 +25,8 @@ app.use(bodyParser.json());
 app.use(expressValidator());
 
 //Instances
-var Common = require('./modules/common.js')(app);
+Common = require('./modules/common.js')(app);
+Controllers = require('./modules/controllers/controllers.js')(app);
 
 //Load routes 
 require('./modules/routes/routes.js')(app);

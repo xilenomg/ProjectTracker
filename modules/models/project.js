@@ -1,5 +1,4 @@
 module.exports = function(app){
-	var Common = require('../common.js')(app);
 
 	var Project = Common.sequelize.define('Project', {
 		id: {
