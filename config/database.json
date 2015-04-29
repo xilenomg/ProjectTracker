@@ -24,11 +24,11 @@
   "production": {
     "driver": "mysql",
     "dialect": "mysql",
-    "host": "www.dataminas.com.br",
+    "host": "localhost",
     "port": "3306",
-    "username": "projecttracker",
-    "database": "dataminas_projecttracker",
-    "password": "466987b0ecc88e39f2da7bcd10b3c3b9",
+    "username": "root",
+    "database": "project-tracker",
+    "password": "root",
     "insecureAuth": true
   }
 }
